@@ -8,11 +8,25 @@ use library\mysmarty\Upload;
 #[Route('/article')]
 class Article extends BackendCurd
 {
+    protected array $searchCondition = ['id/s' => '=', 'column_id/i', 'uri/s', 'status'];
     protected string $field = 'article.*,column.name,column.type';
     protected array $joinCondition = ['column', 'column.id=article.column_id'];
     protected int $dataType = 3;
     protected string $table = 'article';
     protected bool $allowDeleteMethod = true;
+    protected array $columnData = [];
+
+    public function __construct()
+    {
+        parent::__construct();
+        $column = new \application\home\model\Column();
+        $columnData = $column->order('pid asc,id asc')
+            ->field('id,name,pid,type,status')
+            ->notIn('type', [1, 4])
+            ->select();
+        $this->columnData = $this->dealLevelData($columnData);
+        $this->assign('columnList', $this->columnData);
+    }
 
     /**
      * 添加
@@ -62,13 +76,7 @@ class Article extends BackendCurd
      */
     private function getColumnData(): array
     {
-        $column = new \application\home\model\Column();
-        $columnData = $column->field('id,name,type,pid')
-            ->neq('status', 3)
-            ->neq('type', 4)
-            ->order('pid asc,id asc')
-            ->select();
-        $columnData = $this->dealLevelData($columnData);
+        $columnData = $this->columnData;
         // 处理栏目数据
         $article = new \application\home\model\Article();
         $whereMap = [];
@@ -77,6 +85,11 @@ class Article extends BackendCurd
             $whereMap['article.id'] = [$id, '!='];
         }
         foreach ($columnData as $k => $v) {
+            // 去掉隐藏的栏目
+            if ((int)$v['status'] === 3) {
+                unset($columnData[$k]);
+                continue;
+            }
             switch ($v['type']) {
                 case 1:
                 case 3:

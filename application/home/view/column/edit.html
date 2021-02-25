@@ -26,6 +26,7 @@
                             <option value="3" {if $data['type'] == 3}selected="selected"{/if}>单页面</option>
                             <option value="4" {if $data['type'] == 4}selected="selected"{/if}>第三方链接</option>
                         </select>
+                        <small class="form-text text-success">栏目类型为单页面时：需要在文章列表添加一篇此栏目下的文章</small>
                     </div>
                     <div class="form-group mb-3" id="fwlj">
                         <label for="uri" class="form-label" id="uriText">访问路径</label>
@@ -88,7 +89,8 @@
             } else if (type === 3) {
                 $('#gjz').hide();
                 $('#mx').hide();
-                $('#fwlj').show();
+                $('#fwlj').hide();
+                $('#uri').val('');
                 $("#status").removeAttr("disabled");
             } else if (type === 4) {
                 $('#gjz').hide();

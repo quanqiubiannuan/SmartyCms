@@ -8,6 +8,32 @@
                     {if auth('article/add')}
                     <a href="{url}/article/add" class="btn btn-outline-primary align-top"><i class="fas fa-plus"></i>添加</a>
                     {/if}
+                    <form method="get" action="{href}" class="form-inline d-none d-md-inline-flex">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ID</div>
+                            </div>
+                            <input type="number" class="form-control" id="id" name="id" placeholder="文章ID" value="{$id}">
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">访问路径</div>
+                            </div>
+                            <input type="text" class="form-control" id="uri" name="uri" placeholder="文章访问路径" value="{$uri}">
+                        </div>
+                        <select class="custom-select" name="column_id" id="column_id">
+                            <option value="" {if empty($column_id)}selected{/if}>栏目</option>
+                            {foreach $columnList as $item}
+                            <option value="{$item['id']}" {if $column_id == $item['id']}selected{/if}>{echoLevelStr($item['level'])}{$item['name']}</option>
+                            {/foreach}
+                        </select>
+                        <select class="custom-select" name="status" id="status">
+                            <option value="" {if empty($status)}selected{/if}>状态</option>
+                            <option value="1" {if $status== 1}selected{/if}>显示</option>
+                            <option value="2" {if $status== 2}selected{/if}>隐藏</option>
+                        </select>
+                        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-search"></i>搜索</button>
+                    </form>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-center text-nowrap mb-0">
