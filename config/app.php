@@ -18,6 +18,8 @@ return [
     'default_timezone' => 'Asia/Shanghai',
     // 应用默认url，不要以http开头或以 / 结尾，如：www.baidu.com
     'app_url' => '',
+    // SmartyCms版本号
+    'smarty_cms_version' => '0.0.1',
     // 框架版本号
     'smarty_admin_version' => '0.0.2',
     // 管理员登录session名
