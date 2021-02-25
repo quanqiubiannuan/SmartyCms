@@ -1,0 +1,40 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body pb-0">
+                <div class="table-responsive">
+                    <table class="table table-center mb-0 text-nowrap">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>管理员</th>
+                            <th>时间</th>
+                            <th>IP</th>
+                            <th>状态</th>
+                            <th>浏览器</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $list['data'] as $item}
+                        <tr>
+                            <th>{$item['id']}</th>
+                            <td>{$item['admin_name']}</td>
+                            <td>{$item['create_time']}</td>
+                            <td>{$item['ip']}</td>
+                            <td>{if $item['status'] == 1}成功{else}失败{/if}</td>
+                            <td>{$item['user_agent']}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                {include file='page.html'}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

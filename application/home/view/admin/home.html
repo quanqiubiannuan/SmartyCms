@@ -1,0 +1,57 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header border-bottom-0">
+                <h3 class="card-title">系统信息</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>版本</th>
+                        <td><a href="https://sa.wyzda.com" target="_blank">SmartyAdmin {$smartyAdminVersion}</a></td>
+                    </tr>
+                    <tr>
+                        <th>PHP框架</th>
+                        <td><a href="https://github.com/quanqiubiannuan/MySmarty" target="_blank">MySmarty {$mysmartyVersion}</a></td>
+                    </tr>
+                    <tr>
+                        <th>PHP版本</th>
+                        <td><a href="https://www.php.net" target="_blank">PHP {$phpVersion}</a></td>
+                    </tr>
+                    <tr>
+                        <th>PHP配置文件</th>
+                        <td>{$iniPath}</td>
+                    </tr>
+                    <tr>
+                        <th>已启用扩展</th>
+                        <td>{$extensions}</td>
+                    </tr>
+                    {if auth('admin/phpinfo')}
+                    <tr>
+                        <td colspan="2">
+                            {smartyAdminHref('admin/phpinfo','phpinfo','btn-link','_blank')}
+                        </td>
+                    </tr>
+                    {/if}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                登录日志
+            </div>
+            <ul class="list-group list-group-flush">
+                {foreach $logs as $log}
+                <li class="list-group-item">
+                    {$log['ip']}<small>（{$log['create_time']}）</small>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</div>
+{/block}

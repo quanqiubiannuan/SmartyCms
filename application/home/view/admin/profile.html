@@ -1,0 +1,39 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <figure class="figure">
+                    {if !empty($smartyAdmin['avatar'])}
+                    <img width="100" height="100" class="img-circle elevation-2 mb-2" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
+                    {else}
+                    <span class="font-100 text-info">
+                        <i class="fas fa-user-circle"></i>
+                    </span>
+                    {/if}
+                    <figcaption class="figure-caption text-center">{$smartyAdmin['name']}</figcaption>
+                </figure>
+                <div class="d-block text-secondary">
+                    <b>ID：</b>{$smartyAdmin['id']}
+                </div>
+                <div class="d-block text-secondary mt-2">
+                    <b>性别：</b>{if $smartyAdmin['gender'] == 0}未知{elseif $smartyAdmin['gender'] == 1}男{else}女{/if}
+                </div>
+                <div class="d-block text-secondary mt-2">
+                    <b>所属组：</b>{$groupName}
+                </div>
+                <div class="d-block text-secondary mt-2">
+                    <b>创建时间：</b>{$smartyAdmin['create_time']}
+                </div>
+                <div class="d-block text-secondary mt-2">
+                    <b>更新时间：</b>{$smartyAdmin['update_time']}
+                </div>
+                <div class="d-block text-secondary mt-2">
+                    {smartyAdminHref('admin/update_profile','更新资料')}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

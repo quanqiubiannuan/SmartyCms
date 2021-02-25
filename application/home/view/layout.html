@@ -1,0 +1,145 @@
+<!DOCTYPE html>{config_load file="templet.conf"}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{url}/css/all.min.css" rel="stylesheet">
+    <link href="{url}/css/icheck-bootstrap.min.css" rel="stylesheet">
+    <link href="{url}/css/adminlte.min.css" rel="stylesheet">
+    <link href="{url}/css/smartyadmin.css" rel="stylesheet">
+    <title>{#title#}</title>
+    {block name=css}{/block}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" data-enable-remember="true" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {if !$isMenuPage}
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:history.back();" role="button" title="返回">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </li>
+            {/if}
+            {if auth('admin/clear_cache')}
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#" title="清空缓存">
+                    <i class="fa fa-trash-alt"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{url}/admin/clear_cache?type=1" class="dropdown-item">
+                        <i class="fa fa-trash mr-2"></i>清空所有缓存
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{url}/admin/clear_cache?type=2" class="dropdown-item">
+                        <i class="fa fa-file mr-2"></i>清空模板缓存
+                    </a>
+                    <a href="{url}/admin/clear_cache?type=3" class="dropdown-item">
+                        <i class="fa fa-file-alt mr-2"></i>清空内容缓存
+                    </a>
+                </div>
+            </li>
+            {/if}
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#" title="{$smartyAdmin['name']}">
+                    {if !empty($smartyAdmin['avatar'])}
+                    <img class="img-circle" width="20" height="20" src="{$smartyAdmin['avatar']}" alt="{$smartyAdmin['name']}">
+                    {else}
+                    <i class="fas fa-user-circle"></i>
+                    {/if}
+                    <span>{$smartyAdmin['name']}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    {if auth('admin/profile')}
+                        <a class="dropdown-item" href="{url}/admin/profile"><i class="fas fa-user-circle mr-2"></i>个人资料</a>
+                    {/if}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{url}/login"><i class="fas fa-sign-out-alt mr-2"></i>退出</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    {if !empty($smartyAdmin['avatar'])}
+                    <img src="{$smartyAdmin['avatar']}" class="img-circle elevation-2" alt="{$smartyAdmin['name']}">
+                    {else}
+                    <i class="fas fa-user-circle font-34 text-white"></i>
+                    {/if}
+                </div>
+                <div class="info">
+                    <a href="{if auth('admin/profile')}{url}/admin/profile{else}#{/if}"
+                       class="d-block">{$smartyAdmin['name']}</a>
+                </div>
+            </div>
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="搜索"
+                           aria-label="搜索">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    {foreach $smartyMenu as $menu}
+                    {if !empty($menu['children'])}
+                    <li class="nav-item{if $menu['expanded']} menu-open{/if}">
+                        <a href="#" class="nav-link{if $menu['expanded']} active{/if}">
+                            <i class="nav-icon {$menu['icon']}"></i>
+                            <p>
+                                {$menu['name']}
+                                <i class="right fas fa-angle-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            {foreach $menu['children'] as $childMenu}
+                            <li class="nav-item">
+                                <a href="{url}/{$childMenu['url']}" class="nav-link{if $childMenu['id'] == $currentMenu['id']} active{/if}">
+                                    <i class="{$childMenu['icon']} nav-icon"></i>
+                                    <p>{$childMenu['name']}</p>
+                                </a>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </li>
+                    {else}
+                    <li class="nav-item">
+                        <a href="{url}/{$menu['url']}" class="nav-link{if $menu['id'] == $currentMenu['id']} active{/if}">
+                            <i class="nav-icon {$menu['icon']}"></i>
+                            <p>
+                                {$menu['name']}
+                            </p>
+                        </a>
+                    </li>
+                    {/if}
+                    {/foreach}
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="content-wrapper">
+        <section class="pt-3 content">
+            <div class="container-fluid">
+                {block name=content}{/block}
+            </div>
+        </section>
+    </div>
+</div>
+<script src="{url}/js/jquery.min.js"></script>
+<script src="{url}/js/bootstrap.bundle.min.js"></script>
+<script src="{url}/js/adminlte.min.js"></script>
+{block name=js}{/block}
+</body>
+</html>

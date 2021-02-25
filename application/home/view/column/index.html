@@ -1,0 +1,54 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body pb-0">
+                <div class="search d-block mb-3">
+                    {if auth('column/add')}
+                    <a href="{url}/column/add" class="btn btn-outline-primary align-top"><i class="fas fa-plus"></i>添加</a>
+                    {/if}
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-center text-nowrap mb-0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th class="text-start">栏目名称</th>
+                            <th>访问路径</th>
+                            <th>排序</th>
+                            <th>新窗口</th>
+                            <th>类型</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $list as $item}
+                        <tr>
+                            <th>{$item['id']}</th>
+                            <td class="text-start">{echoLevelStr($item['level'])}{$item['name']}</td>
+                            <td>{$item['uri']}</td>
+                            <td>{$item['sort_num']}</td>
+                            <td>{if $item['target_blank'] == 1}否{else}是{/if}</td>
+                            <td>{if $item['type'] == 1}首页{elseif $item['type'] == 2}数据列表{elseif $item['type'] == 3}单页面{else}第三方链接{/if}</td>
+                            <td>{if $item['status'] == 1}顶部{elseif $item['status'] == 2}底部{else}隐藏{/if}</td>
+                            <td>
+                                {if auth('column/edit')}
+                                <a href="{url}/column/edit?id={$item['id']}" class="btn-link"><i class="fas fa-edit"></i></a>
+                                {/if}
+                                {if auth('column/delete')}
+                                <a href="{url}/column/delete?id={$item['id']}" id="smartyAdminDelete{$item['id']}" class="btn-link text-danger" onclick="return smartyAdminDelete({$item['id']});"><i class="fas fa-trash-alt"></i></a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file='modal.html'}
+{/block}

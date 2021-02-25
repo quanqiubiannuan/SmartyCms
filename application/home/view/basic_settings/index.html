@@ -1,0 +1,95 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{href}" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <label for="app_url" class="form-label">网站域名</label>
+                        <input type="text" class="form-control" id="app_url" name="app_url" placeholder="例如：www.wyzda.com" value="{config('app.app_url')}">
+                        <small class="form-text text-success">如果页面链接生成没问题，就不需要填写</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="title" class="form-label">网站名称</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="例如：SmartyCms内容管理系统" value="{getTempletConfig('templet.conf','title')}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="keywords" class="form-label">网站关键字</label>
+                        <input type="text" class="form-control" id="keywords" name="keywords" placeholder="多个关键字英文逗号分隔" value="{getTempletConfig('templet.conf','keywords')}">
+                        <small class="form-text text-success">如果页面未设置关键字，则取这里设置的关键字</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="description" class="form-label">网站描叙</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="网站是做什么的？" value="{getTempletConfig('templet.conf','description')}">
+                        <small class="form-text text-success">如果页面未设置描叙，则取这里设置的描叙</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block">格式化页面</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="load_output_filter" id="load_output_filter1" value="1" {if config('mysmarty.load_output_filter')}checked{/if}>
+                            <label class="form-check-label" for="load_output_filter1">是</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="load_output_filter" id="load_output_filter2" value="2" {if !config('mysmarty.load_output_filter')}checked{/if}>
+                            <label class="form-check-label" for="load_output_filter2">否</label>
+                        </div>
+                        <small class="form-text text-success">开启后，页面源码显示在一行上</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="lifetime" class="form-label">cookie/session有效期</label>
+                        <input type="number" class="form-control" id="lifetime" name="lifetime" placeholder="例如：604800" value="{config('session.lifetime')}">
+                        <small class="form-text text-success">设置登录有效期，单位为秒</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="caching_type" class="form-label">开启页面缓存（前台页面）</label>
+                        <select class="custom-select" id="caching_type" name="caching_type">
+                            <option value="" {if !config('mysmarty.caching_type')}selected="selected"{/if}>无</option>
+                            <option value="file" {if config('mysmarty.caching_type') == 'file'}selected="selected"{/if}>文件缓存</option>
+                            <option value="redis" {if config('mysmarty.caching_type') == 'redis'}selected="selected"{/if}>Redis缓存</option>
+                        </select>
+                        <small class="form-text text-success">页面缓存开启后，可快速打开页面</small>
+                        <small class="form-text text-muted">无：不开启缓存，实时从数据库中查数据</small>
+                        <small class="form-text text-muted">文件缓存：将内容缓存到文件系统中</small>
+                        <small class="form-text text-muted">Redis缓存：将内容缓存到Redis中</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="cache_life_time" class="form-label">页面缓存时间</label>
+                        <input type="number" class="form-control" id="cache_life_time" name="cache_life_time" placeholder="例如：3600" value="{config('mysmarty.cache_life_time')}">
+                        <small class="form-text text-success">页面缓存时间，单位为秒</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="host" class="form-label">Redis主机</label>
+                        <input type="text" class="form-control" id="host" name="host" placeholder="例如：127.0.0.1" value="{config('database.redis.host')}">
+                        <small class="form-text text-success">如果使用了Redis缓存，则需要设置</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="port" class="form-label">Redis端口</label>
+                        <input type="number" class="form-control" id="port" name="port" placeholder="例如：6379" value="{config('database.redis.port')}">
+                        <small class="form-text text-success">如果使用了Redis缓存，则需要设置</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="pass" class="form-label">Redis密码</label>
+                        <input type="text" class="form-control" id="pass" name="pass" placeholder="设置了Redis密码，则需要填写" value="{config('database.redis.pass')}">
+                        <small class="form-text text-success">如果使用了Redis缓存，则需要设置</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="db" class="form-label">Redis缓存库</label>
+                        <input type="number" class="form-control" id="db" name="db" placeholder="例如：0" value="{config('mysmarty.caching_type_params.redis.db')}">
+                        <small class="form-text text-success">如果使用了Redis缓存，则需要设置。默认取值为 0 - 15 之间的任一数字</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="js" class="form-label">Js统计/推送代码</label>
+                        <textarea placeholder="例如：百度等Js统计代码、百度等主动推送Js代码" class="form-control" id="js" name="js" rows="3">{getTempletConfig('templet.conf','js')}</textarea>
+                        <small class="form-text text-success">此处填写获取到的完整Js代码，可填写多个Js代码</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+                <div class="alert alert-success mt-3 mb-0" role="alert">
+                    保存配置后，需要清空缓存（页面右上角）后生效！
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

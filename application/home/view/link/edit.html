@@ -1,0 +1,44 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{href}?id={$data['id']}" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <label for="title" class="form-label">网站名称</label>
+                        <input type="text" class="form-control" id="title" name="title" required="required" value="{$data['title']}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="url" class="form-label">链接</label>
+                        <input type="url" required="required" class="form-control" id="url" name="url" value="{$data['url']}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block">nofollow</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nofollow" id="nofollow1" value="y" {if $data['nofollow'] == 'y'}checked{/if}>
+                            <label class="form-check-label" for="nofollow1">是</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nofollow" id="nofollow2" value="n" {if $data['nofollow'] == 'n'}checked{/if}>
+                            <label class="form-check-label" for="nofollow2">否</label>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block">是否显示</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="is_show" id="is_show1" value="y" {if $data['is_show'] == 'y'}checked{/if}>
+                            <label class="form-check-label" for="is_show1">是</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="is_show" id="is_show2" value="n" {if $data['is_show'] == 'n'}checked{/if}>
+                            <label class="form-check-label" for="is_show2">否</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">编辑</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

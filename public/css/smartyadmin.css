@@ -1,0 +1,40 @@
+.login-box .login-card-body .input-group img {
+    height: 38px;
+}
+
+.font-34 {
+    font-size: 34px;
+}
+
+.font-100 {
+    font-size: 100px;
+}
+
+.custom-file-label::after {
+    content: '浏览' !important;
+}
+
+.table-center tr td, .table-center tr th {
+    padding: .75rem !important;
+    text-align: center;
+}
+
+.search a, .search form .input-group, .search form .custom-select {
+    margin-right: 0.5rem;
+}
+
+.btn i.fas {
+    margin-right: 0.5rem;
+}
+
+tr td a.btn-link {
+    margin: 0 .1rem;
+}
+
+.layout-fixed .wrapper .sidebar {
+    height: calc(100vh - 1px) !important;
+}
+
+.text-start {
+    text-align: left !important;
+}

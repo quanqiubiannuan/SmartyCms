@@ -1,0 +1,15 @@
+<nav aria-label="分页">
+    <ul class="pagination mb-0 justify-content-end">
+        {foreach $list['pageData'] as $p}
+        {if $p == $list['curPage']}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">{$p}</span>
+        </li>
+        {else}
+        <li class="page-item">
+            <a class="page-link" href="{href}?page={$p}{$searchParam}" title="{$p}">{$p}</a>
+        </li>
+        {/if}
+        {/foreach}
+    </ul>
+</nav>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>{config_load file="templet.conf"}
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{url}/css/all.min.css" rel="stylesheet">
+    <link href="{url}/css/icheck-bootstrap.min.css" rel="stylesheet">
+    <link href="{url}/css/adminlte.min.css" rel="stylesheet">
+    <link href="{url}/css/smartyadmin.css" rel="stylesheet">
+    <title>{#title#}</title>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">{#title#}</p>
+            <form action="{href}" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" name="name" required="required" class="form-control" placeholder="用户名">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="password" required="required" class="form-control" placeholder="密码">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input placeholder="验证码" type="text" required="required" class="form-control" name="code">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-check"></span>
+                        </div>
+                    </div>
+                    {captcha src='/captcha'}
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{url}/js/jquery.min.js"></script>
+<script src="{url}/js/bootstrap.bundle.min.js"></script>
+<script src="{url}/js/adminlte.min.js"></script>
+</body>
+</html>
