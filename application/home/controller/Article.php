@@ -8,10 +8,11 @@ use library\mysmarty\Upload;
 #[Route('/article')]
 class Article extends BackendCurd
 {
-    protected string $field = 'article.*,column.name';
+    protected string $field = 'article.*,column.name,column.type';
     protected array $joinCondition = ['column', 'column.id=article.column_id'];
     protected int $dataType = 3;
     protected string $table = 'article';
+    protected bool $allowDeleteMethod = true;
 
     /**
      * 添加
@@ -30,14 +31,9 @@ class Article extends BackendCurd
             }
             $data['admin_id'] = $this->smartyAdmin['id'];
             if (!empty($data['timing'])) {
-                $timing = strtotime($data['timing']);
-                if (empty($timing) || $timing < time()) {
-                    $data['timing'] = time();
-                } else {
-                    $data['timing'] = $timing;
-                }
+                $data['timing'] = (int)strtotime($data['timing']);
             } else {
-                $data['timing'] = time();
+                $data['timing'] = 0;
             }
             if (empty($data['uri'])) {
                 $data['uri'] = getUri();
@@ -75,11 +71,17 @@ class Article extends BackendCurd
         $columnData = $this->dealLevelData($columnData);
         // 处理栏目数据
         $article = new \application\home\model\Article();
+        $whereMap = [];
+        $id = getInt('id');
+        if ($id > 0) {
+            $whereMap['article.id'] = [$id, '!='];
+        }
         foreach ($columnData as $k => $v) {
             switch ($v['type']) {
                 case 1:
                 case 3:
                     $articleData = $article->field('article.id')
+                        ->whereMap($whereMap)
                         ->leftJoin('column', 'column.id=article.column_id')
                         ->eq('column.type', $v['type'])
                         ->eq('column.id', $v['id'])
@@ -98,14 +100,60 @@ class Article extends BackendCurd
      */
     public function edit()
     {
-
-    }
-
-    /**
-     * 删除
-     */
-    public function delete()
-    {
-
+        $id = getInt('id');
+        if (empty($id)) {
+            $this->error('参数错误');
+        }
+        $article = new \application\home\model\Article();
+        $data = $article->eq('id', $id)->find();
+        if (empty($data)) {
+            $this->error('数据不存在');
+        }
+        $columnData = $this->getColumnData();
+        if (isPost()) {
+            $data = $_POST;
+            if (empty($data['content'])) {
+                $this->error('内容不能为空');
+            }
+            $validate = new \application\home\validate\Article();
+            if ($validate->scene('edit')->check($data) === false) {
+                $this->error($validate->getError());
+            }
+            $data['admin_id'] = $this->smartyAdmin['id'];
+            if (!empty($data['timing'])) {
+                $timing = strtotime($data['timing']);
+                if (empty($timing) || $timing < time()) {
+                    $data['timing'] = time();
+                } else {
+                    $data['timing'] = $timing;
+                }
+            } else {
+                $data['timing'] = time();
+            }
+            if (empty($data['uri'])) {
+                $data['uri'] = getUri();
+            }
+            if (!empty($data['keywords'])) {
+                $data['keywords'] = str_ireplace('，', ',', $data['keywords']);
+            }
+            $thumbnail = Upload::getInstance()->move('thumbnail');
+            if (!empty($thumbnail)) {
+                $data['thumbnail'] = $thumbnail;
+            }
+            $num = $article->eq('id', $id)
+                ->update($data);
+            if ($num > 0) {
+                $this->success('编辑成功', getAbsoluteUrl() . '/' . $this->currentMenu['url']);
+            }
+            $this->error('编辑失败');
+        }
+        if ($data['timing'] > 0) {
+            $data['timing'] = date('Y-m-d\TH:i', $data['timing']);
+        } else {
+            $data['timing'] = '';
+        }
+        $this->assign('data', $data);
+        $this->assign('columnData', $columnData);
+        $this->display();
     }
 }
