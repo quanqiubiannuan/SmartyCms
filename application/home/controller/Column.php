@@ -29,6 +29,7 @@ class Column extends Backend
         $column = new \application\home\model\Column();
         $columnData = $column->field('id,name')
             ->eq('pid', 0)
+            ->eq('type', 2)
             ->eq('status', 1)
             ->select();
         $setHome = $column->isSetHomeColumn();
@@ -71,7 +72,9 @@ class Column extends Backend
         $setHome = $column->isSetHomeColumn($id);
         $columnData = $column->field('id,name')
             ->eq('pid', 0)
+            ->eq('type', 2)
             ->eq('status', 1)
+            ->neq('id', $id)
             ->select();
         if (isPost()) {
             $data = $_POST;
