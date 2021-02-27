@@ -1,7 +1,7 @@
 <?php
 return [
-    'cache' => 1,
-    'caching_type' => 'file',
+    'cache' => 0,
+    'caching_type' => '',
     'caching_type_params' => [
         'redis' => [
             'db' => 1

@@ -15,6 +15,6 @@ class Web extends Controller
      */
     public function index()
     {
-        echo 'home';
+        $this->display();
     }
 }
