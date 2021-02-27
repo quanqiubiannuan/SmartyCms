@@ -99,6 +99,18 @@
                 $("#status").removeAttr("disabled");
             }
         });
+        let initPid = parseInt($('#pid').val());
+        if (initPid !== 0){
+            $("#status").find('option[value="2"]').attr("disabled", "disabled");
+        }
+        $('#pid').change(function (){
+            let pid = parseInt($(this).val());
+            if (pid === 0){
+                $("#status").find('option[value="2"]').removeAttr("disabled");
+            } else {
+                $("#status").find('option[value="2"]').attr("disabled", "disabled");
+            }
+        });
     });
 </script>
 {/block}

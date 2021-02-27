@@ -153,5 +153,9 @@ class Column extends Backend
                 }
                 break;
         }
+        // 底部导航没有上级栏目ID
+        if (2 === (int)$data['status']) {
+            $data['pid'] = 0;
+        }
     }
 }
