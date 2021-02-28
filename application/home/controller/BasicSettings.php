@@ -51,11 +51,22 @@ STR;
             if (false === file_put_contents($configDir . '/app.php', $appConfigStr)) {
                 $this->error('app配置保存失败');
             }
+            $icp = getPostString('icp');
+            $pns = getPostString('pns');
+            $pnscode = '';
+            if (!empty($pns)) {
+                if (preg_match('/([\d]+)/', $pns, $mat)) {
+                    $pnscode = $mat[1];
+                }
+            }
             // 网站配置
             $templetConfigStr = <<<STR
 title = {$title}
 keywords = {$keywords}
 description = {$description}
+icp = {$icp}
+pns = {$pns}
+pnscode = {$pnscode}
 js = """{$js}"""
 STR;
             if (false === file_put_contents($configDir . '/templet.conf', $templetConfigStr)) {

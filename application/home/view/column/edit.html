@@ -71,33 +71,37 @@
 {/block}
 {block name=js}
 <script>
+    function initType(){
+        let type = parseInt($('#type').val());
+        if (type === 1) {
+            $('#gjz').show();
+            $('#mx').show();
+            $('#fwlj').hide();
+            $('#uri').val('');
+            $('#status').val('1');
+            $("#status").attr("disabled", "disabled");
+        } else if (type === 2) {
+            $('#gjz').show();
+            $('#mx').show();
+            $('#fwlj').show();
+            $("#status").removeAttr("disabled");
+        } else if (type === 3) {
+            $('#gjz').hide();
+            $('#mx').hide();
+            $('#fwlj').hide();
+            $('#uri').val('');
+            $("#status").removeAttr("disabled");
+        } else if (type === 4) {
+            $('#gjz').hide();
+            $('#mx').hide();
+            $('#fwlj').show();
+            $("#status").removeAttr("disabled");
+        }
+    }
     $(document).ready(function (){
+        initType();
         $('#type').change(function (){
-            let type = parseInt($(this).val());
-            if (type === 1) {
-                $('#gjz').show();
-                $('#mx').show();
-                $('#fwlj').hide();
-                $('#uri').val('');
-                $('#status').val('1');
-                $("#status").attr("disabled", "disabled");
-            } else if (type === 2) {
-                $('#gjz').show();
-                $('#mx').show();
-                $('#fwlj').show();
-                $("#status").removeAttr("disabled");
-            } else if (type === 3) {
-                $('#gjz').hide();
-                $('#mx').hide();
-                $('#fwlj').hide();
-                $('#uri').val('');
-                $("#status").removeAttr("disabled");
-            } else if (type === 4) {
-                $('#gjz').hide();
-                $('#mx').hide();
-                $('#fwlj').show();
-                $("#status").removeAttr("disabled");
-            }
+            initType();
         });
         let initPid = parseInt($('#pid').val());
         if (initPid !== 0){

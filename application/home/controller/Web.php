@@ -3,6 +3,7 @@
 namespace application\home\controller;
 
 use library\mysmarty\Controller;
+use library\mysmarty\Route;
 
 /**
  * 网站前台页面控制器

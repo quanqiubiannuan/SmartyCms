@@ -79,6 +79,14 @@
                         <small class="form-text text-success">如果使用了Redis缓存，则需要设置。默认取值为 0 - 15 之间的任一数字</small>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="icp" class="form-label">ICP备案号</label>
+                        <input type="text" class="form-control" id="icp" name="icp" value="{getTempletConfig('templet.conf','icp')}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="pns" class="form-label">联网备案号</label>
+                        <input type="text" class="form-control" id="pns" name="pns" value="{getTempletConfig('templet.conf','pns')}">
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="js" class="form-label">Js统计/推送代码</label>
                         <textarea placeholder="例如：百度等Js统计代码、百度等主动推送Js代码" class="form-control" id="js" name="js" rows="3">{getTempletConfig('templet.conf','js')}</textarea>
                         <small class="form-text text-success">此处填写获取到的完整Js代码，可填写多个Js代码</small>

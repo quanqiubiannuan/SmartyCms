@@ -54,6 +54,29 @@
     </div>
     <aside class="control-sidebar control-sidebar-dark"></aside>
     <footer class="main-footer text-center">
+        {if !empty($bottomColumnData)}
+        <ul class="nav justify-content-center">
+            {foreach $bottomColumnData as $item}
+            <li class="nav-item">
+                <a href="{if $item['type'] == 4}{$item['uri']}{else}{url}/{$item['uri']}{/if}" class="nav-link p-1" title="{$item['name']}"{if $item['target_blank'] == 2} target="_blank"{/if}>{$item['name']}</a>
+            </li>
+            {/foreach}
+        </ul>
+        {/if}
+        {if empty(getPath()) && (!empty(getTempletConfig("templet.conf","icp")) || !empty(getTempletConfig("templet.conf","pns")))}
+        <ul class="nav justify-content-center">
+            {if !empty(getTempletConfig("templet.conf","pns"))}
+            <li class="nav-item">
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode={#pnscode#}" class="nav-link text-muted p-1" title="{#pns#}" target="_blank" rel="nofollow">{#pns#}</a>
+            </li>
+            {/if}
+            {if !empty(getTempletConfig("templet.conf","icp"))}
+            <li class="nav-item">
+                <a href="http://beian.miit.gov.cn" class="nav-link text-muted p-1" title="{#icp#}" target="_blank" rel="nofollow">{#icp#}</a>
+            </li>
+            {/if}
+        </ul>
+        {/if}
         <strong>Copyright &copy; 2020-{date('Y')} <a href="https://sa.wyzda.com/" title="SmartyCms" target="_blank">SmartyCms</a>.</strong> All rights reserved.
     </footer>
 </div>
