@@ -145,6 +145,10 @@ class Column extends Backend
             case 3:
                 if (empty($data['uri'])) {
                     $data['uri'] = getUri();
+                } else {
+                    if (!preg_match('/^[0-9a-z.\-_]+$/i', $data['uri'])) {
+                        $this->error('访问路径包含特殊字符');
+                    }
                 }
                 break;
             case 4:

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 检查访问的url是否有权限访问
  * @param string $currentPath 访问的url路径

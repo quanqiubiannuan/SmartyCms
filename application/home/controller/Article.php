@@ -51,6 +51,10 @@ class Article extends BackendCurd
             }
             if (empty($data['uri'])) {
                 $data['uri'] = getUri();
+            } else {
+                if (!preg_match('/^[0-9a-z.\-_]+$/i', $data['uri'])) {
+                    $this->error('访问路径包含特殊字符');
+                }
             }
             if (!empty($data['keywords'])) {
                 $data['keywords'] = str_ireplace('，', ',', $data['keywords']);
@@ -145,6 +149,10 @@ class Article extends BackendCurd
             }
             if (empty($data['uri'])) {
                 $data['uri'] = getUri();
+            } else {
+                if (!preg_match('/^[0-9a-z.\-_]+$/i', $data['uri'])) {
+                    $this->error('访问路径包含特殊字符');
+                }
             }
             if (!empty($data['keywords'])) {
                 $data['keywords'] = str_ireplace('，', ',', $data['keywords']);
