@@ -29,8 +29,8 @@
                         <small class="form-text text-success">栏目类型为单页面时：需要在文章列表添加一篇此栏目下的文章</small>
                     </div>
                     <div class="form-group mb-3" id="fwlj">
-                        <label for="uri" class="form-label" id="uriText">访问路径</label>
-                        <input type="text" class="form-control" id="uri" name="uri" value="{$data['uri']}" placeholder="只能使用数字、字母、中划线、下划线、点字符，例如：about-me_1.html">
+                        <label for="url" class="form-label" id="urlText">第三方链接</label>
+                        <input type="text" class="form-control" id="url" name="url" value="{$data['url']}">
                         <small class="form-text text-success">访问路径未填写时：访问路径自动设置为生成的32位随机字符串</small>
                         <small class="form-text text-muted">栏目类型为首页时：访问路径自动设置为空</small>
                         <small class="form-text text-muted">栏目类型为第三方链接时：访问路径为第三方完整链接</small>
@@ -77,19 +77,19 @@
             $('#gjz').show();
             $('#mx').show();
             $('#fwlj').hide();
-            $('#uri').val('');
+            $('#url').val('');
             $('#status').val('1');
             $("#status").attr("disabled", "disabled");
         } else if (type === 2) {
             $('#gjz').show();
             $('#mx').show();
-            $('#fwlj').show();
+            $('#fwlj').hide();
             $("#status").removeAttr("disabled");
         } else if (type === 3) {
             $('#gjz').hide();
             $('#mx').hide();
             $('#fwlj').hide();
-            $('#uri').val('');
+            $('#url').val('');
             $("#status").removeAttr("disabled");
         } else if (type === 4) {
             $('#gjz').hide();

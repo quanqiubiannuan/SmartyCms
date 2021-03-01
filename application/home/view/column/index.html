@@ -15,7 +15,6 @@
                         <tr>
                             <th>ID</th>
                             <th class="text-start">栏目名称</th>
-                            <th>访问路径</th>
                             <th>排序</th>
                             <th>新窗口</th>
                             <th>类型</th>
@@ -28,7 +27,6 @@
                         <tr>
                             <th>{$item['id']}</th>
                             <td class="text-start">{echoLevelStr($item['level'])}{$item['name']}</td>
-                            <td>{$item['uri']}</td>
                             <td>{$item['sort_num']}</td>
                             <td>{if $item['target_blank'] == 1}否{else}是{/if}</td>
                             <td>{if $item['type'] == 1}首页{elseif $item['type'] == 2}数据列表{elseif $item['type'] == 3}单页面{else}第三方链接{/if}</td>

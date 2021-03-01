@@ -8,7 +8,7 @@ use library\mysmarty\Upload;
 #[Route('/article')]
 class Article extends BackendCurd
 {
-    protected array $searchCondition = ['id/s' => '=', 'column_id/i', 'uri/s', 'status'];
+    protected array $searchCondition = ['id/s' => '=', 'column_id/s' => '=', 'status/s' => '='];
     protected string $field = 'article.*,column.name,column.type';
     protected array $joinCondition = ['column', 'column.id=article.column_id'];
     protected int $dataType = 3;
@@ -48,13 +48,6 @@ class Article extends BackendCurd
                 $data['timing'] = (int)strtotime($data['timing']);
             } else {
                 $data['timing'] = 0;
-            }
-            if (empty($data['uri'])) {
-                $data['uri'] = getUri();
-            } else {
-                if (!preg_match('/^[0-9a-z.\-_]+$/i', $data['uri'])) {
-                    $this->error('访问路径包含特殊字符');
-                }
             }
             if (!empty($data['keywords'])) {
                 $data['keywords'] = str_ireplace('，', ',', $data['keywords']);
@@ -146,13 +139,6 @@ class Article extends BackendCurd
                 }
             } else {
                 $data['timing'] = time();
-            }
-            if (empty($data['uri'])) {
-                $data['uri'] = getUri();
-            } else {
-                if (!preg_match('/^[0-9a-z.\-_]+$/i', $data['uri'])) {
-                    $this->error('访问路径包含特殊字符');
-                }
             }
             if (!empty($data['keywords'])) {
                 $data['keywords'] = str_ireplace('，', ',', $data['keywords']);

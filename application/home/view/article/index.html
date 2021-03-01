@@ -15,12 +15,6 @@
                             </div>
                             <input type="number" class="form-control" id="id" name="id" placeholder="文章ID" value="{$id}">
                         </div>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">访问路径</div>
-                            </div>
-                            <input type="text" class="form-control" id="uri" name="uri" placeholder="文章访问路径" value="{$uri}">
-                        </div>
                         <select class="custom-select" name="column_id" id="column_id">
                             <option value="" {if empty($column_id)}selected{/if}>栏目</option>
                             {foreach $columnList as $item}

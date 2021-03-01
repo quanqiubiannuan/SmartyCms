@@ -139,20 +139,14 @@ class Column extends Backend
                 if ($setHome) {
                     $this->error('首页栏目类型已设置');
                 }
-                $data['uri'] = '';
+                $data['url'] = '';
                 break;
             case 2:
             case 3:
-                if (empty($data['uri'])) {
-                    $data['uri'] = getUri();
-                } else {
-                    if (!preg_match('/^[0-9a-z.\-_]+$/i', $data['uri'])) {
-                        $this->error('访问路径包含特殊字符');
-                    }
-                }
+                $data['url'] = '';
                 break;
             case 4:
-                if (!isUrl($data['uri'])) {
+                if (!isUrl($data['url'])) {
                     $this->error('访问路径错误');
                 }
                 break;

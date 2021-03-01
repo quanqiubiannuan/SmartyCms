@@ -61,12 +61,8 @@ class Web extends Controller
 
     /**
      * 网站首页
-     * @param string $uri 唯一访问路径
      */
-    #[Route('/{uri}', pattern: [
-        'uri' => '[0-9a-z.\-_]+'
-    ], level: Route::LOW)]
-    public function index(string $uri = '')
+    public function index()
     {
         $this->display();
     }
