@@ -61,14 +61,34 @@ class Web extends Controller
 
     /**
      * 网站首页
-     * @param string $uri
      */
-    #[Route('/{uri}', pattern: [
+    public function index()
+    {
+        $this->display();
+    }
+
+
+    /**
+     * 栏目列表
+     * @param string $uri 唯一访问路径
+     */
+    #[Route('/c/{uri}', pattern: [
         'uri' => '[0-9a-z.\-_]+'
     ], level: Route::LOW)]
-    public function index(string $uri = '')
+    public function column(string $uri)
     {
-        var_dump($uri);
-        $this->display();
+
+    }
+
+    /**
+     * 文章详情
+     * @param string $uri 唯一访问路径
+     */
+    #[Route('/a/{uri}', pattern: [
+        'uri' => '[0-9a-z.\-_]+'
+    ], level: Route::LOW)]
+    public function article(string $uri)
+    {
+
     }
 }
