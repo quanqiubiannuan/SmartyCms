@@ -51,6 +51,11 @@ class Article extends BackendCurd
             }
             if (!empty($data['keywords'])) {
                 $data['keywords'] = str_ireplace('，', ',', $data['keywords']);
+            } else {
+                $data['keywords'] = htmlspecialchars($data['title']);
+            }
+            if (empty($data['description'])) {
+                $data['description'] = getDescriptionforArticle($data['content'], 120);
             }
             $thumbnail = Upload::getInstance()->move('thumbnail');
             if (!empty($thumbnail)) {
@@ -142,6 +147,11 @@ class Article extends BackendCurd
             }
             if (!empty($data['keywords'])) {
                 $data['keywords'] = str_ireplace('，', ',', $data['keywords']);
+            } else {
+                $data['keywords'] = htmlspecialchars($data['title']);
+            }
+            if (empty($data['description'])) {
+                $data['description'] = getDescriptionforArticle($data['content'], 120);
             }
             $thumbnail = Upload::getInstance()->move('thumbnail');
             if (!empty($thumbnail)) {
