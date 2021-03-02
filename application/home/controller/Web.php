@@ -20,7 +20,7 @@ class Web extends Controller
         // 查找所有栏目数据
         $column = new \application\home\model\Column();
         $columnData = $column->order('pid asc,id asc')
-            ->field('id,uri,pid,name,type,target_blank,keywords,description,status')
+            ->field('id,url,pid,name,type,target_blank,keywords,description,status')
             ->neq('status', 3)
             ->select();
         $this->columnData = $columnData;
