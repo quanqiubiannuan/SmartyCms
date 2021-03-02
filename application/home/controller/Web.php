@@ -12,6 +12,8 @@ class Web extends Controller
 {
     // 栏目数据
     private array $columnData;
+    // 可以查询的文章列表所在栏目ID
+    private array $inColumnIds;
 
     public function __construct()
     {
@@ -25,13 +27,18 @@ class Web extends Controller
         $this->columnData = $columnData;
         $topColumnData = [];
         $bottomColumnData = [];
+        $inColumnIds = [];
         foreach ($columnData as $v) {
             if (1 == $v['status']) {
                 $topColumnData[] = $v;
             } else if (2 == $v['status']) {
                 $bottomColumnData[] = $v;
             }
+            if (2 == $v['type']){
+                $inColumnIds[] = $v['id'];
+            }
         }
+        $this->inColumnIds = $inColumnIds;
         $tmpTopColumnData = [];
         foreach ($topColumnData as $v) {
             $tmpTopColumnData[$v['pid']][] = $v;
@@ -63,7 +70,7 @@ class Web extends Controller
      */
     public function index()
     {
-        $this->display();
+        $this->showColumnType1();
     }
 
     /**
@@ -77,6 +84,7 @@ class Web extends Controller
             ->order('timing', 'desc')
             ->elt('timing', time())
             ->eq('status', 1)
+            ->in('column_id',$this->inColumnIds)
             ->limit(15)
             ->select();
         $this->assign('newData', $newData);
@@ -84,6 +92,12 @@ class Web extends Controller
         $this->assign('randomData', $this->getRandomData());
         // 热门文章
         $this->assign('hotData', $this->getHotData());
+        // 友情链接
+        $link = new \application\home\model\Link();
+        $linkData = $link->field('url,title,nofollow')
+            ->eq('is_show','y')
+            ->select();
+        $this->assign('linkData', $linkData);
         $this->display('web/index.html');
     }
 
@@ -93,7 +107,7 @@ class Web extends Controller
      * @param int $num 查询的数量
      * @return array
      */
-    private function getRandomData(string $field = 'id,title', int $num = 5): array
+    private function getRandomData(string $field = 'id,title,target_blank', int $num = 5): array
     {
         $article = new \application\home\model\Article();
         $maxId = $article->max('id');
@@ -107,6 +121,7 @@ class Web extends Controller
             ->elt('timing', time())
             ->eq('status', 1)
             ->gt('id', $rid)
+            ->in('column_id',$this->inColumnIds)
             ->limit($num)
             ->select();
     }
@@ -117,13 +132,14 @@ class Web extends Controller
      * @param int $num 查询的数量
      * @return array
      */
-    private function getHotData(string $field = 'id,title', int $num = 5): array
+    private function getHotData(string $field = 'id,title,target_blank', int $num = 5): array
     {
         $article = new \application\home\model\Article();
         return $article->field($field)
             ->order('num', 'desc')
             ->elt('timing', time())
             ->eq('status', 1)
+            ->in('column_id',$this->inColumnIds)
             ->limit($num)
             ->select();
     }

@@ -1,0 +1,12 @@
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h5 class="card-title m-0">热门文章</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="list-group list-group-flush">
+            {foreach $randomData as $item}
+            <a href="{url}/article/{$item['id']}.html" class="list-group-item list-group-item-action hang1 pt-0 pb-0 height48" title="{$item['title']}"{if $item['target_blank'] == 2} target="_blank"{/if}>{$item['title']}</a>
+            {/foreach}
+        </div>
+    </div>
+</div>
