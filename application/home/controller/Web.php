@@ -3,7 +3,6 @@
 namespace application\home\controller;
 
 use library\mysmarty\Controller;
-use library\mysmarty\Route;
 
 /**
  * 网站前台页面控制器
@@ -65,5 +64,67 @@ class Web extends Controller
     public function index()
     {
         $this->display();
+    }
+
+    /**
+     * 展示栏目类型为首页的数据
+     */
+    private function showColumnType1()
+    {
+        // 最新文章
+        $article = new \application\home\model\Article();
+        $newData = $article->field('id,title,thumbnail,description,target_blank')
+            ->order('timing', 'desc')
+            ->elt('timing', time())
+            ->eq('status', 1)
+            ->limit(15)
+            ->select();
+        $this->assign('newData', $newData);
+        // 随机文章
+        $this->assign('randomData', $this->getRandomData());
+        // 热门文章
+        $this->assign('hotData', $this->getHotData());
+        $this->display('web/index.html');
+    }
+
+    /**
+     * 获取随机文章
+     * @param string $field 查询的字段
+     * @param int $num 查询的数量
+     * @return array
+     */
+    private function getRandomData(string $field = 'id,title', int $num = 5): array
+    {
+        $article = new \application\home\model\Article();
+        $maxId = $article->max('id');
+        if ($maxId <= $num) {
+            $rid = 0;
+        } else {
+            $rid = mt_rand(0, $maxId - $num);
+        }
+        return $article->field($field)
+            ->order('timing', 'asc')
+            ->elt('timing', time())
+            ->eq('status', 1)
+            ->gt('id', $rid)
+            ->limit($num)
+            ->select();
+    }
+
+    /**
+     * 获取热门文章
+     * @param string $field 查询的字段
+     * @param int $num 查询的数量
+     * @return array
+     */
+    private function getHotData(string $field = 'id,title', int $num = 5): array
+    {
+        $article = new \application\home\model\Article();
+        return $article->field($field)
+            ->order('num', 'desc')
+            ->elt('timing', time())
+            ->eq('status', 1)
+            ->limit($num)
+            ->select();
     }
 }
