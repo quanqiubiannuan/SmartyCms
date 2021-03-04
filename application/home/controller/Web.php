@@ -3,6 +3,7 @@
 namespace application\home\controller;
 
 use library\mysmarty\Controller;
+use library\mysmarty\Route;
 
 /**
  * 网站前台页面控制器
@@ -14,6 +15,8 @@ class Web extends Controller
     private array $columnData;
     // 可以查询的文章列表所在栏目ID
     private array $inColumnIds;
+    // 可以查询的文章列表所在栏目数据
+    private array $inColumnData;
 
     public function __construct()
     {
@@ -27,18 +30,19 @@ class Web extends Controller
         $this->columnData = $columnData;
         $topColumnData = [];
         $bottomColumnData = [];
-        $inColumnIds = [];
+        $inColumnData = [];
         foreach ($columnData as $v) {
             if (1 == $v['status']) {
                 $topColumnData[] = $v;
             } else if (2 == $v['status']) {
                 $bottomColumnData[] = $v;
             }
-            if (2 == $v['type']){
-                $inColumnIds[] = $v['id'];
+            if (2 == $v['type']) {
+                $inColumnData[] = $v;
             }
         }
-        $this->inColumnIds = $inColumnIds;
+        $this->inColumnData = $inColumnData;
+        $this->inColumnIds = array_column($inColumnData, 'id');
         $tmpTopColumnData = [];
         foreach ($topColumnData as $v) {
             $tmpTopColumnData[$v['pid']][] = $v;
@@ -70,7 +74,36 @@ class Web extends Controller
      */
     public function index()
     {
-        $this->showColumnType1();
+        if (empty($this->columnData)) {
+            $this->error('未设置栏目');
+        }
+        $this->showColumn($this->columnData[0]);
+    }
+
+    /**
+     * 根据单条栏目数据，显示不同的页面
+     * @param array $columnData 本栏目数据
+     */
+    private function showColumn(array $columnData)
+    {
+        $this->assign('title', $columnData['name']);
+        $this->assign('keywords', $columnData['keywords']);
+        $this->assign('description', $columnData['description']);
+        switch ($columnData['type']) {
+            case 1:
+                $this->assign('title', '');
+                $this->showColumnType1();
+                break;
+            case 2:
+                $this->showColumnType2($columnData['id'], $columnData['name']);
+                break;
+            case 3:
+                $this->showColumnType3($columnData['id']);
+                break;
+            case 4:
+                redirect($columnData['url']);
+                break;
+        }
     }
 
     /**
@@ -84,7 +117,7 @@ class Web extends Controller
             ->order('id', 'desc')
             ->elt('timing', time())
             ->eq('status', 1)
-            ->in('column_id',$this->inColumnIds)
+            ->in('column_id', $this->inColumnIds)
             ->limit(15)
             ->select();
         $this->assign('newData', $newData);
@@ -95,10 +128,65 @@ class Web extends Controller
         // 友情链接
         $link = new \application\home\model\Link();
         $linkData = $link->field('url,title,nofollow')
-            ->eq('is_show','y')
+            ->eq('is_show', 'y')
             ->select();
         $this->assign('linkData', $linkData);
         $this->display('web/index.html');
+    }
+
+    /**
+     * 展示栏目类型为数据列表的数据
+     * @param int $columnId 栏目ID
+     * @param string $columnName 栏目名称
+     */
+    private function showColumnType2(int $columnId, string $columnName)
+    {
+        $columnIds = [$columnId];
+        foreach ($this->inColumnData as $c) {
+            if (in_array($c['pid'], $columnIds)) {
+                $columnIds[] = $c['id'];
+            }
+        }
+        // 最新文章
+        $article = new \application\home\model\Article();
+        $newData = $article->field('id,title,thumbnail,description,target_blank')
+            ->order('id', 'desc')
+            ->elt('timing', time())
+            ->eq('status', 1)
+            ->in('column_id', $columnIds)
+            ->limit(15)
+            ->select();
+        $this->assign('newData', $newData);
+        // 随机文章
+        $this->assign('randomData', $this->getRandomData());
+        // 热门文章
+        $this->assign('hotData', $this->getHotData());
+        $this->assign('columnName', $columnName);
+        $this->display('web/column.html');
+    }
+
+
+    /**
+     * 展示栏目类型为单页面的数据
+     * @param int $columnId 栏目ID
+     */
+    private function showColumnType3(int $columnId)
+    {
+        $article = new \application\home\model\Article();
+        $data = $article->field('id,title,content,keywords,description')
+            ->eq('status', 1)
+            ->eq('column_id', $columnId)
+            ->find();
+        if (!empty($data)) {
+            $this->assign('title', $data['title']);
+            $this->assign('id', $data['id']);
+            $this->assign('content', $data['content']);
+            $this->assign('keywords', $data['keywords']);
+            $this->assign('description', $data['description']);
+        } else {
+            $this->assign('content', '');
+        }
+        $this->display('web/single.html');
     }
 
     /**
@@ -121,7 +209,7 @@ class Web extends Controller
             ->elt('timing', time())
             ->eq('status', 1)
             ->gt('id', $rid)
-            ->in('column_id',$this->inColumnIds)
+            ->in('column_id', $this->inColumnIds)
             ->limit($num)
             ->select();
     }
@@ -139,8 +227,26 @@ class Web extends Controller
             ->order('num', 'desc')
             ->elt('timing', time())
             ->eq('status', 1)
-            ->in('column_id',$this->inColumnIds)
+            ->in('column_id', $this->inColumnIds)
             ->limit($num)
             ->select();
+    }
+
+    /**
+     * 显示栏目数据
+     * @param int $id 栏目ID
+     */
+    #[Route('/column/{id}.html', pattern: [
+        'id' => '[0-9]+'
+    ])]
+    public function column(int $id)
+    {
+        foreach ($this->columnData as $v) {
+            if ($v['id'] == $id) {
+                $this->showColumn($v);
+                break;
+            }
+        }
+        $this->error('栏目不存在');
     }
 }
