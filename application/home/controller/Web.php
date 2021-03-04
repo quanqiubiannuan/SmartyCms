@@ -81,7 +81,7 @@ class Web extends Controller
         // 最新文章
         $article = new \application\home\model\Article();
         $newData = $article->field('id,title,thumbnail,description,target_blank')
-            ->order('timing', 'desc')
+            ->order('id', 'desc')
             ->elt('timing', time())
             ->eq('status', 1)
             ->in('column_id',$this->inColumnIds)
@@ -117,7 +117,7 @@ class Web extends Controller
             $rid = mt_rand(0, $maxId - $num);
         }
         return $article->field($field)
-            ->order('timing', 'asc')
+            ->order('id', 'asc')
             ->elt('timing', time())
             ->eq('status', 1)
             ->gt('id', $rid)
