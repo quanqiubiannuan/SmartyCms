@@ -1,0 +1,42 @@
+{extends file='web_layout.html'}
+{block name=css}
+<link href="{url}/ckeditor/ckeditor.min.css" rel="stylesheet">
+{/block}
+{block name=content}
+<div class="content-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h5 class="m-0 hang1">{$data['title']}</h5>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{url}" title="首页">首页</a></li>
+                    <li class="breadcrumb-item"><a href="{url}/column/{$data['column_id']}.html" title="{$data['name']}">{$data['name']}</a></li>
+                    <li class="breadcrumb-item active hang1">{$data['title']}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card card-primary card-outline">
+                    <div class="card-body">
+                        <p class="text-center text-gray">时间：{$data['create_time']}</p>
+                        <div class="ck-content">
+                        {$data['content']}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {include file='web/hot.html'}
+                {include file='web/random.html'}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

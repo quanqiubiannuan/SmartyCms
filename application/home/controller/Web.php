@@ -249,4 +249,34 @@ class Web extends Controller
         }
         $this->error('栏目不存在');
     }
+
+    /**
+     * 显示文章数据
+     * @param int $id 文章ID
+     */
+    #[Route('/article/{id}.html', pattern: [
+        'id' => '[0-9]+'
+    ])]
+    public function article(int $id)
+    {
+        $article = new \application\home\model\Article();
+        $data = $article->field('article.id,article.column_id,article.title,article.content,article.keywords,article.description,article.num,article.create_time,column.name')
+            ->eq('article.id', $id)
+            ->eq('article.status', 1)
+            ->elt('article.timing', time())
+            ->leftJoin('column', 'column.id=article.column_id')
+            ->find();
+        if (empty($data)) {
+            $this->error('文章不存在');
+        }
+        $this->assign('data', $data);
+        $this->assign('title', $data['title']);
+        $this->assign('keywords', $data['keywords']);
+        $this->assign('description', $data['description']);
+        // 随机文章
+        $this->assign('randomData', $this->getRandomData());
+        // 热门文章
+        $this->assign('hotData', $this->getHotData());
+        $this->display('web/article.html');
+    }
 }
