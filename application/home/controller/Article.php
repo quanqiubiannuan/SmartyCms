@@ -2,6 +2,7 @@
 
 namespace application\home\controller;
 
+use library\mysmarty\Image;
 use library\mysmarty\Route;
 use library\mysmarty\Upload;
 
@@ -59,6 +60,10 @@ class Article extends BackendCurd
             }
             $thumbnail = Upload::getInstance()->move('thumbnail');
             if (!empty($thumbnail)) {
+                // 缩放缩略图
+                if (empty(Image::getInstance(PUBLIC_DIR . $thumbnail)->zoom(64, 64, PUBLIC_DIR . $thumbnail))) {
+                    $this->error('缩略图缩放失败');
+                }
                 $data['thumbnail'] = $thumbnail;
             }
             $article = new \application\home\model\Article();
@@ -155,6 +160,10 @@ class Article extends BackendCurd
             }
             $thumbnail = Upload::getInstance()->move('thumbnail');
             if (!empty($thumbnail)) {
+                // 缩放缩略图
+                if (empty(Image::getInstance(PUBLIC_DIR . $thumbnail)->zoom(64, 64, PUBLIC_DIR . $thumbnail))) {
+                    $this->error('缩略图缩放失败');
+                }
                 $data['thumbnail'] = $thumbnail;
             }
             $num = $article->eq('id', $id)
