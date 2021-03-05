@@ -55,6 +55,9 @@
                             <td>{$item['create_time']}</td>
                             <td>
                                 <a href="{url}/article/{$item['id']}.html" class="btn-link text-info" target="_blank"><i class="fas fa-eye"></i></a>
+                                {if auth('article/push')}
+                                <a href="{url}/article/push?id={$item['id']}" class="btn-article text-success"><i class="fas fa-share"></i></a>
+                                {/if}
                                 {if auth('article/edit')}
                                 <a href="{url}/article/edit?id={$item['id']}" class="btn-article"><i class="fas fa-edit"></i></a>
                                 {/if}

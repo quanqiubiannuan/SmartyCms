@@ -1,0 +1,27 @@
+{extends file='layout.html'}
+{block name=content}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{href}" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="token">百度站长平台 token</label>
+                        <input type="text" class="form-control" id="token" name="token" value="{config('api.token')}" placeholder="例如：FW9pS1kIqgQ0V8Iz">
+                        <small class="form-text text-success">可用于快速收录、普通收录API提交文章链接</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="apikey" class="form-label">Bing站长平台API密钥</label>
+                        <input type="text" class="form-control" id="apikey" name="apikey" value="{config('api.apikey')}" placeholder="例如：c02af9fc6dbf78ecaf9de7d8daea12a4">
+                        <small class="form-text text-success">可用于URL提交文章链接</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+                <div class="alert alert-success mt-3 mb-0" role="alert">
+                    清空缓存（页面右上角）后，新的设置才会生效！
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,5 +1,7 @@
 <?php
 
+use library\mysmarty\Query;
+
 /**
  * 检查访问的url是否有权限访问
  * @param string $currentPath 访问的url路径
@@ -69,4 +71,55 @@ function getUri(int $num = 32, string $salt = ''): string
         $str .= md5(time() . mt_rand(1000, 9999) . $salt . $i);
     }
     return substr($str, 0, $num);
+}
+
+/**
+ * 推送至百度
+ * @param string|array $urls 推送链接
+ * @param string $type 对提交内容的数据类型说明，快速收录参数：daily
+ * @return string
+ */
+function pushToBaidu(array|string $urls, string $type = 'daily'): string
+{
+    if (is_string($urls)) {
+        $urls = [$urls];
+    }
+    $api = 'http://data.zz.baidu.com/urls?site=' . getAbsoluteUrl() . '&token=' . config('api.token');
+    if (!empty($type)) {
+        $api .= '&type=' . $type;
+    }
+    $ch = curl_init();
+    $options = array(
+        CURLOPT_URL => $api,
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POSTFIELDS => implode("\n", $urls),
+        CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+    );
+    curl_setopt_array($ch, $options);
+    $result = curl_exec($ch);
+    return (string)$result;
+}
+
+/**
+ * 推送至bing
+ * @param array|string $urls 推送链接
+ * @return string
+ */
+function pushToBing(array|string $urls): string
+{
+    $apikey = config('api.apikey');
+    if (is_string($urls)) {
+        $urls = [$urls];
+    }
+    $result = Query::getInstance()->setUrl('https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey=' . $apikey)
+        ->setPostFields(json_encode([
+            'siteUrl' => getAbsoluteUrl(),
+            'urlList' => $urls
+        ]))
+        ->setHeader([
+            'Content-Type: application/json; charset=utf-8'
+        ])
+        ->getOne();
+    return (string)$result;
 }

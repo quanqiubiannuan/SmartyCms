@@ -182,4 +182,39 @@ class Article extends BackendCurd
         $this->assign('columnData', $columnData);
         $this->display();
     }
+
+    /**
+     * 文章推送
+     */
+    public function push()
+    {
+        $id = getInt('id');
+        if (empty($id)) {
+            $this->error('参数错误');
+        }
+        $article = new \application\home\model\Article();
+        $data = $article->field('id,title')
+            ->eq('id', $id)
+            ->find();
+        if (empty($data)) {
+            $this->error('数据不存在');
+        }
+        $url = getAbsoluteUrl() . '/article/' . $id . '.html';
+        $baiduDaily = '';
+        $baidu = '';
+        $bing = '';
+        if (!empty(config('api.token'))) {
+            $baiduDaily = pushToBaidu($url);
+            $baidu = pushToBaidu($url, '');
+        }
+        if (!empty(config('api.apikey'))) {
+            $bing = pushToBing($url);
+        }
+        $this->assign('baiduDaily', $baiduDaily);
+        $this->assign('baidu', $baidu);
+        $this->assign('bing', $bing);
+        $this->assign('data', $data);
+        $this->assign('url', $url);
+        $this->display();
+    }
 }
