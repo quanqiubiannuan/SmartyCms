@@ -234,6 +234,24 @@ class Web extends Controller
     }
 
     /**
+     * 获取最新文章
+     * @param string $field 查询的字段
+     * @param int $num 查询的数量
+     * @return array
+     */
+    private function getNewData(string $field = 'id,title,target_blank', int $num = 5): array
+    {
+        $article = new \application\home\model\Article();
+        return $article->field($field)
+            ->order('id', 'desc')
+            ->elt('timing', time())
+            ->eq('status', 1)
+            ->in('column_id', $this->inColumnIds)
+            ->limit($num)
+            ->select();
+    }
+
+    /**
      * 显示栏目数据
      * @param int $id 栏目ID
      */
@@ -299,5 +317,96 @@ class Web extends Controller
         }
         header('content-type:application/javascript');
         exit('');
+    }
+
+    /**
+     * sitemap地图
+     */
+    #[Route('/sitemap.xml')]
+    public function siteMap()
+    {
+        $urls = $this->getSiteMapUrls();
+        $sitemap = '';
+        foreach ($urls as $url) {
+            $time = date('Y-m-d');
+            $sitemap .= <<<STR
+<url>
+     <loc>{$url}</loc>
+     <lastmod>{$time}</lastmod>
+     <changefreq>daily</changefreq>
+     <priority>0.8</priority>
+  </url>
+STR;
+        }
+        $sitemap = <<<SITEMAP
+<?xml version="1.0" encoding="utf-8"?>
+<urlset>
+{$sitemap}
+</urlset>
+SITEMAP;
+        header('content-type:text/xml;charset=utf-8');
+        echo $sitemap;
+        exit();
+    }
+
+    /**
+     * sitemap google地图
+     */
+    #[Route('/sitemap_google.xml')]
+    public function siteMapGoogle()
+    {
+        $urls = $this->getSiteMapUrls();
+        $sitemap = '';
+        foreach ($urls as $url) {
+            $time = date('Y-m-d');
+            $sitemap .= <<<STR
+<url>
+     <loc>{$url}</loc>
+     <lastmod>{$time}</lastmod>
+  </url>
+STR;
+        }
+        $sitemap = <<<SITEMAP
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{$sitemap}
+</urlset>
+SITEMAP;
+        header('content-type:text/xml;charset=utf-8');
+        echo $sitemap;
+        exit();
+    }
+
+    /**
+     * 获取网站地图链接
+     * @return array
+     */
+    private function getSiteMapUrls(): array
+    {
+        $urls = [];
+        // 获取栏目链接
+        foreach ($this->columnData as $v) {
+            if (in_array($v['type'], [2, 3])) {
+                $urls[] = getAbsoluteUrl() . '/column/' . $v['id'] . '.html';
+            }
+        }
+        // 获取文章链接
+        $num = config('sitemap.num', 100);
+        $type = config('sitemap.type', 1);
+        $hasNum = count($urls);
+        if ($num > $hasNum) {
+            $num = $num - $hasNum;
+            if (1 == $type) {
+                // 最新
+                $data = $this->getNewData('id', $num);
+            } else {
+                // 随机
+                $data = $this->getRandomData('id', $num);
+            }
+            foreach ($data as $v) {
+                $urls[] = getAbsoluteUrl() . '/article/' . $v['id'] . '.html';
+            }
+        }
+        return $urls;
     }
 }
