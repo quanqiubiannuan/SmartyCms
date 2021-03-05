@@ -32,6 +32,7 @@
                             <td>{if $item['type'] == 1}首页{elseif $item['type'] == 2}数据列表{elseif $item['type'] == 3}单页面{else}第三方链接{/if}</td>
                             <td>{if $item['status'] == 1}顶部{elseif $item['status'] == 2}底部{else}隐藏{/if}</td>
                             <td>
+                                <a href="{url}/column/{$item['id']}.html" class="btn-link text-info" target="_blank"><i class="fas fa-eye"></i></a>
                                 {if auth('column/edit')}
                                 <a href="{url}/column/edit?id={$item['id']}" class="btn-link"><i class="fas fa-edit"></i></a>
                                 {/if}

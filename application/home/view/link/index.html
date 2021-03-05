@@ -32,6 +32,7 @@
                             <td>{if $item['is_show'] == 'y'}是{else}否{/if}</td>
                             <td>{$item['create_time']}</td>
                             <td>
+                                <a href="{$item['url']}" class="btn-link text-info" target="_blank"><i class="fas fa-eye"></i></a>
                                 {if auth('link/edit')}
                                 <a href="{url}/link/edit?id={$item['id']}" class="btn-link"><i class="fas fa-edit"></i></a>
                                 {/if}

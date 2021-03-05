@@ -54,6 +54,7 @@
                             <td>{if $item['status'] == 1}显示{else}隐藏{/if}</td>
                             <td>{$item['create_time']}</td>
                             <td>
+                                <a href="{url}/article/{$item['id']}.html" class="btn-link text-info" target="_blank"><i class="fas fa-eye"></i></a>
                                 {if auth('article/edit')}
                                 <a href="{url}/article/edit?id={$item['id']}" class="btn-article"><i class="fas fa-edit"></i></a>
                                 {/if}
