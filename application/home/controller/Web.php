@@ -184,6 +184,7 @@ class Web extends Controller
             $this->assign('description', $data['description']);
         } else {
             $this->assign('content', '');
+            $this->assign('id', 0);
         }
         $this->display('web/single.html');
     }
