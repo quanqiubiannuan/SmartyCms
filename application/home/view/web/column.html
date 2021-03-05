@@ -16,18 +16,37 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body pt-0 pb-0">
                         <ul class="list-unstyled">
-                            {foreach $newData as $k => $item}
+                            {foreach $newData['data'] as $k => $item}
                             <li class="media mb-3 mt-3">
                                 {if !empty($item['thumbnail'])}
                                 <img width="64" height="64" src="{$item['thumbnail']}" class="mr-3" alt="{$item['title']}">
                                 {/if}
                                 <div class="media-body">
-                                    <h5 class="mt-0 mb-1 hang1">{$item['title']}</h5>
-                                    <p class="text-muted hang2">{$item['description']}</p>
+                                    <h5 class="mt-0 mb-2 hang1">
+                                        <a class="text-dark" href="{url}/article/{$item['id']}.html" title="{$item['title']}"{if $item['target_blank'] == 2} target="_blank"{/if}>{$item['title']}</a>
+                                    </h5>
+                                    <p class="text-muted hang2"><small>{$item['description']}</small></p>
                                 </div>
                             </li>
                             {/foreach}
                         </ul>
+                        {if $newData['totalPage'] > 1}
+                        <nav aria-label="分页">
+                            <ul class="pagination justify-content-end">
+                                {foreach $newData['pageData'] as $p}
+                                {if $p == $newData['curPage']}
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{$p}</span>
+                                </li>
+                                {else}
+                                <li class="page-item">
+                                    <a class="page-link" href="{href}?page={$p}" title="{$p}">{$p}</a>
+                                </li>
+                                {/if}
+                                {/foreach}
+                            </ul>
+                        </nav>
+                        {/if}
                     </div>
                 </div>
             </div>

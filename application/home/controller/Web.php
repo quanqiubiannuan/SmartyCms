@@ -154,8 +154,7 @@ class Web extends Controller
             ->elt('timing', time())
             ->eq('status', 1)
             ->in('column_id', $columnIds)
-            ->limit(15)
-            ->select();
+            ->paginate(15);
         $this->assign('newData', $newData);
         // 随机文章
         $this->assign('randomData', $this->getRandomData());
