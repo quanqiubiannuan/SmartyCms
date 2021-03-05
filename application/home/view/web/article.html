@@ -23,7 +23,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body">
                         <h5 class="mb-3 text-center">{$data['title']}</h5>
-                        <p class="text-center text-gray">时间：{$data['create_time']}</p>
+                        <p class="text-center text-gray">时间：{$data['create_time']|formatToTime:'Y-m-d'}&nbsp;&nbsp;阅读：{$data['num']}</p>
                         <div class="ck-content">
                         {$data['content']}
                         </div>
@@ -37,4 +37,7 @@
         </div>
     </div>
 </div>
+{/block}
+{block name=js}
+<script src="{url}/article/click/{$data['id']}.html"></script>
 {/block}

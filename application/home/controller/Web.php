@@ -278,4 +278,24 @@ class Web extends Controller
         $this->assign('hotData', $this->getHotData());
         $this->display('web/article.html');
     }
+
+    /**
+     * 文章点击数
+     * @param int $id
+     */
+    #[Route('/article/click/{id}.html', pattern: [
+        'id' => '[0-9]+'
+    ])]
+    public function articleClick(int $id)
+    {
+        if ($id > 0) {
+            $article = new \application\home\model\Article();
+            $article->eq('id', $id)
+                ->eq('status', 1)
+                ->elt('timing', time())
+                ->setInc('num');
+        }
+        header('content-type:application/javascript');
+        exit('');
+    }
 }
