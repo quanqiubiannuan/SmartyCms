@@ -200,9 +200,9 @@ class Article extends BackendCurd
             $this->error('数据不存在');
         }
         $url = getAbsoluteUrl() . '/article/' . $id . '.html';
-        $baiduDaily = '';
-        $baidu = '';
-        $bing = '';
+        $baiduDaily = '未设置api或推送失败';
+        $baidu = '未设置api或推送失败';
+        $bing = '未设置api或推送失败';
         if (!empty(config('api.token'))) {
             $baiduDaily = pushToBaidu($url);
             $baidu = pushToBaidu($url, '');
