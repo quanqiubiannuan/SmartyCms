@@ -174,6 +174,7 @@ class Web extends Controller
         $article = new \application\home\model\Article();
         $data = $article->field('id,title,content,keywords,description')
             ->eq('status', 1)
+            ->elt('timing', time())
             ->eq('column_id', $columnId)
             ->find();
         if (!empty($data)) {
@@ -183,7 +184,7 @@ class Web extends Controller
             $this->assign('keywords', $data['keywords']);
             $this->assign('description', $data['description']);
         } else {
-            $this->assign('content', '');
+            $this->assign('content', '<div class="alert alert-danger mb-0" role="alert">单页面文章不存在或未显示!</div>');
             $this->assign('id', 0);
         }
         $this->display('web/single.html');
