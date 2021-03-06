@@ -43,11 +43,15 @@ class Web extends Controller
         }
         $this->inColumnData = $inColumnData;
         $this->inColumnIds = array_column($inColumnData, 'id');
-        $tmpTopColumnData = [];
-        foreach ($topColumnData as $v) {
-            $tmpTopColumnData[$v['pid']][] = $v;
+        if (!empty($topColumnData)) {
+            $tmpTopColumnData = [];
+            foreach ($topColumnData as $v) {
+                $tmpTopColumnData[$v['pid']][] = $v;
+            }
+            $this->assign('topColumnData', $this->generateTree($tmpTopColumnData, $tmpTopColumnData[0]));
+        } else {
+            $this->assign('topColumnData', []);
         }
-        $this->assign('topColumnData', $this->generateTree($tmpTopColumnData, $tmpTopColumnData[0]));
         $this->assign('bottomColumnData', $bottomColumnData);
     }
 
