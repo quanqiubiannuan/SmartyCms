@@ -10,7 +10,7 @@
                         <select class="custom-select" id="pid" name="pid">
                             <option value="0">无</option>
                             {foreach $authGroups as $authGroup}
-                            <option value="{$authGroup['id']}" {if $data['pid'] == $authGroup['id']}selected="selected"{/if}>{echoLevelStr($authGroup['level'])}{$authGroup['name']}</option>
+                            <option value="{$authGroup['id']}" {if $data['id'] == $authGroup['id']}disabled="disabled"{/if} {if $data['pid'] == $authGroup['id']}selected="selected"{/if}>{echoLevelStr($authGroup['level'])}{$authGroup['name']}</option>
                             {/foreach}
                         </select>
                     </div>

@@ -72,6 +72,9 @@ class AuthGroup extends BackendCurd
         $authRules = $this->dealLevelData($this->getAuthRuleData('id,name,pid', [1]), init: true);
         if (isPost()) {
             $data = $_POST;
+            if ($id == $data['pid']) {
+                $this->error('上级角色ID错误');
+            }
             $validate = new \application\home\validate\AuthGroup();
             if ($validate->scene('edit')->check($data) === false) {
                 $this->error($validate->getError());
