@@ -19,11 +19,6 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{url}" role="button" title="网站首页" target="_blank">
-                    <i class="fas fa-home"></i>
-                </a>
-            </li>
             {if !$isMenuPage}
             <li class="nav-item">
                 <a class="nav-link" href="javascript:history.back();" role="button" title="返回">
@@ -31,6 +26,11 @@
                 </a>
             </li>
             {/if}
+            <li class="nav-item">
+                <a class="nav-link" href="{url}" role="button" title="网站首页" target="_blank">
+                    <i class="fas fa-home"></i>
+                </a>
+            </li>
             {if auth('admin/clear_cache')}
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#" title="清空缓存">
