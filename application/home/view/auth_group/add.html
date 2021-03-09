@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-body">
                 <form method="post" action="{href}" enctype="multipart/form-data">
-                    <div class="form-group mb-3">
+                    <div class="mb-3">
                         <label for="pid" class="form-label">上级角色</label>
                         <select class="custom-select" id="pid" name="pid">
                             <option value="0">无</option>
@@ -14,11 +14,11 @@
                             {/foreach}
                         </select>
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3">
                         <label for="name" class="form-label">角色名</label>
                         <input type="text" class="form-control" id="name" name="name" required="required">
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3">
                         <label for="name" class="form-label">菜单规则</label>
                         {foreach $authRules as $authRule}
                         <div class="form-check mt-2 mb-2">

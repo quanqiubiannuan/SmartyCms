@@ -5,12 +5,12 @@
         <div class="card">
             <div class="card-body">
                 <form method="post" action="{href}" enctype="multipart/form-data">
-                    <div class="form-group mb-3">
+                    <div class="mb-3">
                         <label for="name" class="form-label">用户名</label>
                         <input type="text" class="form-control" id="name" name="name" value="{$smartyAdmin['name']}"
                                required="required">
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3">
                         <label for="avatar" class="form-label">头像</label>
                         <div class="custom-file">
                             <input class="custom-file-input" name="avatar" type="file" id="avatar" accept="image/*">
@@ -18,7 +18,7 @@
                         </div>
                         <small class="form-text text-success">如需更换头像，请选择图片文件。</small>
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3">
                         <label class="form-label d-block">性别</label>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" {if $smartyAdmin['gender'] == 1}checked{/if}>
@@ -29,7 +29,7 @@
                             <label class="form-check-label" for="gender2">女</label>
                         </div>
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3">
                         <label for="password" class="form-label">密码</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="新密码由6-20位字母或数字组成">
                         <small class="form-text text-success">如需更换密码，请填写新密码。</small>
