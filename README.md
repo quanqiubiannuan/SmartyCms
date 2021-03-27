@@ -47,7 +47,7 @@ chmod -R 740 SmartyCms/runtime
 chmod -R 740 SmartyCms/public/upload
 ```
 
- 确保`/SmartyCms/public/runtime`具有可读可写权限
+ 确保`SmartyCms/public/runtime`具有可读可写权限
 
 ```
 chmod -R 740 SmartyCms/public/runtime
@@ -59,8 +59,8 @@ chmod -R 740 SmartyCms/public/runtime
 
 ```
 if (!-e $request_filename) {
-	rewrite  ^/(.*)$  /index.php?s=$1  last;
-	break;
+    rewrite  ^/(.*)$  /index.php?s=$1  last;
+    break;
 }
 ```
 
@@ -71,37 +71,37 @@ if (!-e $request_filename) {
 ```nginx
 server {
     #端口
-	listen 80;
+    listen 80;
     #域名
-	server_name localhost;
+    server_name localhost;
     #代码位置
-	root /usr/share/nginx/html/SmartyCms/public;
+    root /usr/share/nginx/html/SmartyCms/public;
     #首页默认文件
-	index index.html index.htm index.php;
+    index index.html index.htm index.php;
     #文件编码
-	charset utf-8;
+    charset utf-8;
     #错误页面
-	error_page 500 502 503 504 /50x.html;
+    error_page 500 502 503 504 /50x.html;
     #所有请求转发至index.php
-	location / {
-		try_files $uri $uri/ /index.php?$query_string;
-	}
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
     #配置favicon.ico请求
-	location = /favicon.ico {
-		access_log off;
-		log_not_found off;
-	}
+    location = /favicon.ico {
+        access_log off;
+        log_not_found off;
+    }
     #配置robots.txt请求
-	location = /robots.txt {
-		access_log off;
-		log_not_found off;
-	}
+    location = /robots.txt {
+        access_log off;
+        log_not_found off;
+    }
     #处理PHP文件
-	location ~ \.php$ {
-		fastcgi_pass 127.0.0.1:9000;
-		fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-		include fastcgi_params;
-	}
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 }
 ```
 
