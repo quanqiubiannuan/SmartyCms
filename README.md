@@ -59,7 +59,7 @@ chmod -R 740 SmartyCms/public/runtime
 
 ```nginx
 location / {
-	try_files $uri $uri/ /index.php?$query_string;
+    try_files $uri $uri/ /index.php?$query_string;
 }
 ```
 
