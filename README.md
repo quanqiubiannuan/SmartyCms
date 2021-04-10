@@ -57,10 +57,9 @@ chmod -R 740 SmartyCms/public/runtime
 
  添加转发，将所有请求转发至`public/index.php`
 
-```
-if (!-e $request_filename) {
-    rewrite  ^/(.*)$  /index.php?s=$1  last;
-    break;
+```nginx
+location / {
+	try_files $uri $uri/ /index.php?$query_string;
 }
 ```
 
