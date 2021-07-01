@@ -21,7 +21,7 @@
                     <div class="mb-3">
                         <label for="type" class="form-label">栏目类型</label>
                         <select class="custom-select" id="type" name="type">
-                            <option value="1" {if $setHome}disabled="disabled"{/if} {if $data['type'] == 1}selected="selected"{/if}>首页</option>
+                            <option value="1" {if $setHome}readonly="readonly"{/if} {if $data['type'] == 1}selected="selected"{/if}>首页</option>
                             <option value="2" {if $data['type'] == 2}selected="selected"{/if}>数据列表</option>
                             <option value="3" {if $data['type'] == 3}selected="selected"{/if}>单页面</option>
                             <option value="4" {if $data['type'] == 4}selected="selected"{/if}>第三方链接</option>
@@ -79,23 +79,23 @@
             $('#fwlj').hide();
             $('#url').val('');
             $('#status').val('1');
-            $("#status").attr("disabled", "disabled");
+            $("#status").attr("readonly", "readonly");
         } else if (type === 2) {
             $('#gjz').show();
             $('#mx').show();
             $('#fwlj').hide();
-            $("#status").removeAttr("disabled");
+            $("#status").removeAttr("readonly");
         } else if (type === 3) {
             $('#gjz').hide();
             $('#mx').hide();
             $('#fwlj').hide();
             $('#url').val('');
-            $("#status").removeAttr("disabled");
+            $("#status").removeAttr("readonly");
         } else if (type === 4) {
             $('#gjz').hide();
             $('#mx').hide();
             $('#fwlj').show();
-            $("#status").removeAttr("disabled");
+            $("#status").removeAttr("readonly");
         }
     }
     $(document).ready(function (){
@@ -105,14 +105,14 @@
         });
         let initPid = parseInt($('#pid').val());
         if (initPid !== 0){
-            $("#status").find('option[value="2"]').attr("disabled", "disabled");
+            $("#status").find('option[value="2"]').attr("readonly", "readonly");
         }
         $('#pid').change(function (){
             let pid = parseInt($(this).val());
             if (pid === 0){
-                $("#status").find('option[value="2"]').removeAttr("disabled");
+                $("#status").find('option[value="2"]').removeAttr("readonly");
             } else {
-                $("#status").find('option[value="2"]').attr("disabled", "disabled");
+                $("#status").find('option[value="2"]').attr("readonly", "readonly");
             }
         });
     });
